@@ -8,5 +8,6 @@ class coupon(models.Model):
     dicount=models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(100)],help_text='Percentage value from 0 to 100')
     active=models.BooleanField()
     
-    def __str__()
+    def __str__(self):
+        
 
