@@ -1,0 +1,43 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}
+{{ product.name }}
+{% endblock %}
+{% block content %}
+<div class="product-detail">
+    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="Picture">
+    <h1>{{ product.name }}</h1>
+    <h2>
+        <a href="{{ product.category.get_absolute_url }}">
+            {{ product.category }}
+        </a>
+
+    </h2>
+    <p class="price">
+        Rs {{ product.price }}
+    </p>
+    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+        {{ cart_product_form }}
+        {% csrf_token %}
+        <input type="submit" value="Add to cart">
+    </form>
+    <h2 style="margin-top: 80px ;">Product Details</h2>
+    {{ product.description|linebreaks }}
+</div>
+<h2 style="width: 100%; ">Customer Reviews</h2>
+<ul>
+    {% for comment in feedbacks %}
+    <li style="list-style: none;height: 30px; width: 100%;background-color: #d2d2d2;color: darkgray;">
+    <strong> Posted by {{ comment.name }} on {{ comment.date }} </strong></li>
+    <br><p>{{ comment.body }}</p>
+    {% empty %}
+    <p>There are no feedbacks yet.</p>
+    {% endfor %}
+</ul>
+
+    <form action="" method="post">
+        {{ feedback_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Post a review"></p>
+    </form>
+{% endblock %}
